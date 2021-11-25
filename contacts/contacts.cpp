@@ -105,7 +105,7 @@ void Contacts::cleanDb(QSqlDatabase &db) {
 bool Contacts::sqlToCSV()
 {
     QSqlQuery query;
-    QStringList companyList;
+    QStringList companyList ={""};
 
     query.prepare("SELECT company FROM contacts");
     if (!query.exec()){

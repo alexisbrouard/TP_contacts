@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     w.show();
 
     Contacts db_contacts;
-    QString company = "Facebook";
+    /*QString company = "Facebook";
     db_contacts.Delete_Company(company);
     // initial Insert of all data
     QStringList wordList;
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         }
         else
             qDebug() << "Can't open " << file.fileName() << file.errorString() << endl;
-    }
+    }*/
 
     db_contacts.sqlToCSV();
 
