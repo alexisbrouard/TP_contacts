@@ -15,15 +15,14 @@ int main(int argc, char *argv[])
     // initial Insert of all data
     QStringList wordList;
     QString data;
+    QString appDataLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/data_qt";
 
-       QString appDataLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/data_qt";
-
-       QDir    dir(appDataLocation);
-       qDebug() << appDataLocation;
-       if (!dir.exists()) {
+    QDir    dir(appDataLocation);
+    qDebug() << appDataLocation;
+    if (!dir.exists()) {
            dir.mkdir(appDataLocation);
            qDebug() << __FUNCTION__ << __LINE__ << "mkdir" << appDataLocation;
-       }
+    }
 
     QDirIterator iterator(dir);
     while (iterator.hasNext()) {

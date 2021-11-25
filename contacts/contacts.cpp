@@ -20,8 +20,7 @@ Contacts::~Contacts()
 bool Contacts::addRow(QStringList dataList)
 {
     QSqlQuery query;
-    //QDate Date = QDate::fromString(dataList[9],"yyyy/MM/dd");
-
+    dataList[11].replace(QString("\r\n"), QString(""));
     query.prepare("INSERT INTO contacts(GUID, firstname, lastname, email, tel, category, city, birth_day, country, list, company)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     for (int i = 0; i <= 11; i++) {
@@ -43,7 +42,7 @@ bool Contacts::addRow(QStringList dataList)
 bool Contacts::Delete_Company(QString &str)
 {
     QSqlQuery query;
-    query.prepare("DELETE FROM contacts WHERE company ='"+str+"';");
+    query.prepare("DROP * FROM contacts WHERE company ='"+str+"';");
     if(query.exec() == true)
     {
         qDebug() << "Success Delete";
@@ -64,9 +63,6 @@ bool Contacts::setupDB() {
         qWarning() << "Unable to open db" << dbPath;
         return false;
     }
-    qDebug() << __FUNCTION__ << __LINE__ << "creating table 'contacts'";
-
-    //id,GUID,firstname,lastname,email,tel,category,city,birth_day,country,list,company
     QString tblFilesCreate = "CREATE TABLE IF NOT EXISTS contacts ("
                              "id            INTEGER PRIMARY KEY AUTOINCREMENT, "
                              "GUID          STRING,"
@@ -84,15 +80,14 @@ bool Contacts::setupDB() {
     QSqlQuery query;
     query.exec(tblFilesCreate);
     if (query.lastError().isValid()) {
-        //qWarning() << query.lastError().text();
         qWarning() << "Invalid Query";
         return false;
     }
     return true;
 }
 
-void Contacts::cleanDb(QSqlDatabase &db) {
-
+void Contacts::cleanDb(QSqlDatabase &db)
+{
     QSqlQuery query;
     query.exec("DROP TABLE contacts");
     if (query.lastError().isValid()) {
