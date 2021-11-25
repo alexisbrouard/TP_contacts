@@ -7,13 +7,8 @@
 
 Contacts::Contacts()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    setupDB(db);
-}
-
-Contacts::~Contacts()
-{
-
+    _db = QSqlDatabase::addDatabase("QSQLITE");
+    setupDB();
 }
 
 Contacts::~Contacts()
@@ -61,7 +56,7 @@ bool Contacts::Delete_Company(QString &str)
     return false;
 }
 
-bool Contacts::setupDB(QSqlDatabase &_db) {
+bool Contacts::setupDB() {
     QString dbPath = "ContactsBDD.db";
     _db.setDatabaseName(dbPath);
 
