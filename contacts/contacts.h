@@ -24,11 +24,13 @@ class CONTACTS_EXPORT Contacts
 public:
     Contacts();
     ~Contacts();
-    bool setupDB(QSqlDatabase &db);
+    bool setupDB();
     void cleanDb(QSqlDatabase &db);
     bool sqlToCSV();
     bool addRow(QStringList dataList);
+    bool Delete_Company(QString &str);
     QString escapedCSV(QString unexc);
+
 private:
     QSqlDatabase _db;
 };
