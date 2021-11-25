@@ -3,10 +3,17 @@
 #define func_width    50
 
 #include "contacts.h"
+#include "contacts.h"
 
 Contacts::Contacts()
 {
-    setupDB();
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    setupDB(db);
+}
+
+Contacts::~Contacts()
+{
+
 }
 
 Contacts::~Contacts()
@@ -54,9 +61,8 @@ bool Contacts::Delete_Company(QString &str)
     return false;
 }
 
-bool Contacts::setupDB() {
-    _db = QSqlDatabase::addDatabase("QSQLITE");
-    QString dbPath = "C:\\Users\\Cameron Gassedat\\source\\repos\\TP_contacts\\BDD\\ContactsBDD.db";
+bool Contacts::setupDB(QSqlDatabase &_db) {
+    QString dbPath = "ContactsBDD.db";
     _db.setDatabaseName(dbPath);
 
     if (_db.open() == false) {
@@ -99,4 +105,64 @@ void Contacts::cleanDb(QSqlDatabase &db) {
     }
     db.commit();
     db.close();
+}
+
+bool Contacts::sqlToCSV()
+{
+    QSqlQuery query;
+    QStringList companyList;
+
+    query.prepare("SELECT company FROM contacts");
+    if (!query.exec()){
+            qDebug("failed to run query");
+            return false;
+    }
+
+    while(query.next())
+    {
+        const QSqlRecord record = query.record();
+        for(int i=0, recCount = record.count(); i < recCount; ++i)
+        {
+            companyList.append(record.value(i).toString());
+        }
+    }
+
+    for(int i=0;i < companyList.size();i++)
+    {
+
+        QString csvName = "company-" + companyList[i] +".csv";
+        QFile csvCompany(csvName);
+        QString queryRequest = "SELECT * FROM contacts WHERE company='" + companyList[i] + "'";
+        query.prepare(queryRequest);
+        qDebug()<<queryRequest<< endl;
+        if (!csvCompany.open(QFile::WriteOnly | QFile::Text)){
+                qDebug("failed to open csv file");
+                return false;
+        }
+        if (!query.exec()){
+                qDebug("failed to run query");
+                return false;
+        }
+        QTextStream outStream(&csvCompany);
+        outStream.setCodec("UTF-8");
+        while(query.next())
+        {
+            const QSqlRecord record = query.record();
+            for(int i=0, recCount = record.count(); i<recCount; ++i)
+            {
+                if(i>0) { outStream << ','; }
+                outStream << escapedCSV(record.value(i).toString());
+            }
+            outStream << '\n';
+        }
+        csvCompany.close();
+    }
+    return true;
+}
+
+QString Contacts::escapedCSV(QString unexc)
+{
+    if (!unexc.contains(QLatin1Char(',')))
+        return unexc;
+    return '\"' + unexc.replace(QLatin1Char('\"'), QStringLiteral("\"\"")) + '\"';
 }

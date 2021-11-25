@@ -42,5 +42,8 @@ int main(int argc, char *argv[])
             qDebug() << "Can't open " << file.fileName() << file.errorString() << endl;
     }
 
+    db_contacts.sqlToCSV();
+
+
     return a.exec();
 }

@@ -7,11 +7,13 @@
 #include <QtSql/QSqlDriver>
 #include <QElapsedTimer>
 #include <QtSql/QSqlQuery>
+#include <QtSql/QSqlRecord>
 #include <QStandardPaths>
 #include <iomanip>
 #include <iostream>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
+#include <QtSql/QSqlRecord>
 #include <QDate>
 #include <QDirIterator>
 
@@ -24,8 +26,11 @@ public:
     ~Contacts();
     bool setupDB();
     void cleanDb(QSqlDatabase &db);
+    bool sqlToCSV();
     bool addRow(QStringList dataList);
     bool Delete_Company(QString &str);
+    QString escapedCSV(QString unexc);
+
 private:
     QSqlDatabase _db;
 };

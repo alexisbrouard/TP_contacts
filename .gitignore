@@ -4,6 +4,7 @@
 *.o
 *.a
 *.la
+*.csv
 *.lai
 *.so
 *.dll
