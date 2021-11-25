@@ -33,5 +33,8 @@ int main(int argc, char *argv[])
            wordList.append(line.split(',').first());
        }
     */
+
+    db_contacts.sqlToCSV();
+
     return a.exec();
 }
