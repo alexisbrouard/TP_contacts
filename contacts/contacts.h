@@ -12,6 +12,8 @@
 #include <iostream>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
+#include <QDate>
+#include <QDirIterator>
 
 #include "contacts_global.h"
 
@@ -21,7 +23,9 @@ public:
     Contacts();
     bool setupDB();
     void cleanDb(QSqlDatabase &db);
-    bool addRow();
+    bool addRow(QStringList dataList);
+private:
+    QSqlDatabase _db;
 };
 
 #endif // CONTACTS_H

@@ -9,16 +9,39 @@ Contacts::Contacts()
     setupDB();
 }
 
-bool Contacts::addRow()
-{}
+bool Contacts::addRow(QStringList dataList)
+{
+    QSqlQuery query;
+    QDate Date = QDate::fromString( dataList[8],"yyyy/MM/dd");
 
+    query.prepare("INSERT INTO files(GUID, firstname, lastname, email, tel, category, city, birth-date, country, list, company) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    query.bindValue(0, dataList[0]);
+    query.bindValue(1, dataList[0]);
+    query.bindValue(2, dataList[0]);
+    query.bindValue(3, dataList[0]);
+    query.bindValue(4, dataList[0]);
+    query.bindValue(5, dataList[0]);
+    query.bindValue(6, dataList[0]);
+    query.bindValue(7, dataList[0]);
+    query.bindValue(8, Date);
+    query.bindValue(9, dataList[0]);
+    query.bindValue(10, dataList[0]);
+    query.bindValue(11, dataList[0]);
+
+    if(query.exec())
+    {
+          return true;
+    }
+    qDebug() << "Error:" << query.lastError();
+    return false;
+}
 
 bool Contacts::setupDB() {
-    QSqlDatabase db                      = QSqlDatabase::addDatabase("ContactsBDD");
+    _db = QSqlDatabase::addDatabase("QSQLITE");
     QString dbPath = "C:\\Users\\Cameron Gassedat\\source\\repos\\TP_contacts\\BDD\\ContactsBDD.db";
-    db.setDatabaseName(dbPath);
+    _db.setDatabaseName(dbPath);
 
-    if (db.open() == false) {
+    if (_db.open() == false) {
         qWarning() << "Unable to open db" << dbPath;
         return false;
     }
