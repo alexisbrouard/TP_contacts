@@ -26,7 +26,7 @@ public:
     ~Contacts();
     bool setupDB();
     void cleanDb(QSqlDatabase &db);
-    bool sqlToCSV();
+    bool sqlToCSV(QString strExport);
     bool addRow(QStringList dataList);
     bool Delete_Company(QString &str);
     QString escapedCSV(QString unexc);

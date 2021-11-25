@@ -20,7 +20,8 @@ Contacts::~Contacts()
 bool Contacts::addRow(QStringList dataList)
 {
     QSqlQuery query;
-    dataList[11].replace(QString("\r\n"), QString(""));
+    //QDate Date = QDate::fromString(dataList[9],"yyyy/MM/dd");
+
     query.prepare("INSERT INTO contacts(GUID, firstname, lastname, email, tel, category, city, birth_day, country, list, company)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     for (int i = 0; i <= 11; i++) {
@@ -42,7 +43,7 @@ bool Contacts::addRow(QStringList dataList)
 bool Contacts::Delete_Company(QString &str)
 {
     QSqlQuery query;
-    query.prepare("DROP * FROM contacts WHERE company ='"+str+"';");
+    query.prepare("DELETE FROM contacts WHERE company ='"+str+"';");
     if(query.exec() == true)
     {
         qDebug() << "Success Delete";
@@ -63,6 +64,9 @@ bool Contacts::setupDB() {
         qWarning() << "Unable to open db" << dbPath;
         return false;
     }
+    qDebug() << __FUNCTION__ << __LINE__ << "creating table 'contacts'";
+
+    //id,GUID,firstname,lastname,email,tel,category,city,birth_day,country,list,company
     QString tblFilesCreate = "CREATE TABLE IF NOT EXISTS contacts ("
                              "id            INTEGER PRIMARY KEY AUTOINCREMENT, "
                              "GUID          STRING,"
@@ -80,14 +84,15 @@ bool Contacts::setupDB() {
     QSqlQuery query;
     query.exec(tblFilesCreate);
     if (query.lastError().isValid()) {
+        //qWarning() << query.lastError().text();
         qWarning() << "Invalid Query";
         return false;
     }
     return true;
 }
 
-void Contacts::cleanDb(QSqlDatabase &db)
-{
+void Contacts::cleanDb(QSqlDatabase &db) {
+
     QSqlQuery query;
     query.exec("DROP TABLE contacts");
     if (query.lastError().isValid()) {
@@ -97,12 +102,13 @@ void Contacts::cleanDb(QSqlDatabase &db)
     db.close();
 }
 
-bool Contacts::sqlToCSV()
+bool Contacts::sqlToCSV(QString strExport)
 {
     QSqlQuery query;
-    QStringList companyList ={""};
-
-    query.prepare("SELECT company FROM contacts");
+    QStringList exportList ={""};
+    QString exportString;
+    exportString = "SELECT " + strExport + " FROM contacts";
+    query.prepare(exportString);
     if (!query.exec()){
             qDebug("failed to run query");
             return false;
@@ -113,16 +119,23 @@ bool Contacts::sqlToCSV()
         const QSqlRecord record = query.record();
         for(int i=0, recCount = record.count(); i < recCount; ++i)
         {
-            companyList.append(record.value(i).toString());
+            exportList.append(record.value(i).toString());
         }
     }
 
-    for(int i=0;i < companyList.size();i++)
+    for(int i=0;i < exportList.size();i++)
     {
+        QString csvName;
+        if(exportList[i].isEmpty())
+        {
+            csvName = strExport + "-empty.csv";
+        }
+        else {
+            csvName = strExport + "-" + exportList[i] +".csv";
+        }
 
-        QString csvName = "company-" + companyList[i] +".csv";
         QFile csvCompany(csvName);
-        QString queryRequest = "SELECT * FROM contacts WHERE company='" + companyList[i] + "'";
+        QString queryRequest = "SELECT * FROM contacts WHERE "+ strExport + "='" + exportList[i] + "'";
         query.prepare(queryRequest);
         qDebug()<<queryRequest<< endl;
         if (!csvCompany.open(QFile::WriteOnly | QFile::Text)){
