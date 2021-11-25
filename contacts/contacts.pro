@@ -1,5 +1,6 @@
 QT -= gui
 QT += sql
+QT += gui widgets
 
 TEMPLATE = lib
 DEFINES += CONTACTS_LIBRARY

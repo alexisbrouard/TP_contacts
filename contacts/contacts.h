@@ -21,9 +21,11 @@ class CONTACTS_EXPORT Contacts
 {
 public:
     Contacts();
+    ~Contacts();
     bool setupDB();
     void cleanDb(QSqlDatabase &db);
     bool addRow(QStringList dataList);
+    bool Delete_Company(QString &str);
 private:
     QSqlDatabase _db;
 };

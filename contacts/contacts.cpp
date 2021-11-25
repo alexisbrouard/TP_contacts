@@ -9,30 +9,48 @@ Contacts::Contacts()
     setupDB();
 }
 
+Contacts::~Contacts()
+{
+
+}
+
+
 bool Contacts::addRow(QStringList dataList)
 {
     QSqlQuery query;
-    QDate Date = QDate::fromString( dataList[8],"yyyy/MM/dd");
+    //QDate Date = QDate::fromString(dataList[9],"yyyy/MM/dd");
 
-    query.prepare("INSERT INTO files(GUID, firstname, lastname, email, tel, category, city, birth-date, country, list, company) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    query.bindValue(0, dataList[0]);
-    query.bindValue(1, dataList[0]);
-    query.bindValue(2, dataList[0]);
-    query.bindValue(3, dataList[0]);
-    query.bindValue(4, dataList[0]);
-    query.bindValue(5, dataList[0]);
-    query.bindValue(6, dataList[0]);
-    query.bindValue(7, dataList[0]);
-    query.bindValue(8, Date);
-    query.bindValue(9, dataList[0]);
-    query.bindValue(10, dataList[0]);
-    query.bindValue(11, dataList[0]);
-
-    if(query.exec())
+    query.prepare("INSERT INTO contacts(GUID, firstname, lastname, email, tel, category, city, birth_day, country, list, company)"
+                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    for (int i = 0; i <= 11; i++) {
+        if (i == 0)
+            continue;
+        query.bindValue(i - 1, dataList[i]);
+    }
+    if(query.exec() == true)
     {
+        return true;
+    }
+    if (query.lastError().isValid()) {
+            qWarning() << query.lastError().text();
+            return false;
+    }
+    return false;
+}
+
+bool Contacts::Delete_Company(QString &str)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM contacts WHERE company ='"+str+"';");
+    if(query.exec() == true)
+    {
+        qDebug() << "Success Delete";
           return true;
     }
-    qDebug() << "Error:" << query.lastError();
+    if (query.lastError().isValid()) {
+            qWarning() << query.lastError().text();
+            return false;
+     }
     return false;
 }
 
@@ -65,7 +83,8 @@ bool Contacts::setupDB() {
     QSqlQuery query;
     query.exec(tblFilesCreate);
     if (query.lastError().isValid()) {
-        qWarning() << query.lastError().text();
+        //qWarning() << query.lastError().text();
+        qWarning() << "Invalid Query";
         return false;
     }
     return true;
