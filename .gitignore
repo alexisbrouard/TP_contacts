@@ -5,6 +5,7 @@
 *.a
 *.la
 *.csv
+*.db
 *.lai
 *.so
 *.dll
