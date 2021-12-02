@@ -6,6 +6,7 @@
 
 Contacts::Contacts()
 {
+    _pool.setMaxThreadCount(1);
     _db = QSqlDatabase::addDatabase("QSQLITE");
     QString dbPath = "ContactsBDD.db";
     _db.setDatabaseName(dbPath);
@@ -15,16 +16,17 @@ Contacts::Contacts()
     }
     else {
         setupDB();
+        //insertAll();
     }
 }
 
 Contacts::~Contacts()
 {
-
 }
 
 bool Contacts::insertAll()
 {
+    qDebug() << "Inside Function Insert";
     QStringList wordList;
     QString data;
     QStringList appDataLocation = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
@@ -38,21 +40,23 @@ bool Contacts::insertAll()
             while (!file.atEnd()) {
                    data = file.readLine();
                    wordList = data.split(",");
+                   wordList[11].replace("\r\n", "");
                    addRow(wordList);
-                   //QFuture<void> future = QtConcurrent::run(db_contacts.addRow(wordList), wordList);
                    wordList.empty();
             }
         }
     }
+
+    qDebug() << "Exiting Function Insert";
     return true;
 }
 
 bool Contacts::addRow(QStringList dataList)
 {
-    QSqlQuery query;
+    return QtConcurrent::run(&_pool, [this, dataList]() {
+        QSqlQuery query(_db);
     QDate Date = QDate::fromString(dataList[9],"yyyy/MM/dd");
 
-    dataList[11].replace("\r\n", "");
     query.prepare("INSERT INTO contacts(GUID, firstname, lastname, email, tel, category, city, birth_day, country, list, company)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     for (int i = 0; i <= 11; i++) {
@@ -68,6 +72,7 @@ bool Contacts::addRow(QStringList dataList)
         qWarning() << query.lastError().text();
     }
     return false;
+    });
 }
 
 bool Contacts::Delete_Company(QString &str)
@@ -88,7 +93,6 @@ bool Contacts::Delete_Company(QString &str)
 
 bool Contacts::setupDB()
 {
-    qDebug() << __FUNCTION__ << __LINE__ << "creating table 'contacts'";
     QString tblFilesCreate = "CREATE TABLE IF NOT EXISTS contacts ("
                              "id            INTEGER PRIMARY KEY AUTOINCREMENT, "
                              "GUID          STRING,"
@@ -109,6 +113,7 @@ bool Contacts::setupDB()
         qWarning() << "Invalid Query";
         return false;
     }
+     qDebug() << __FUNCTION__ << __LINE__ << "Databse connected / created";
     return true;
 }
 
@@ -125,63 +130,66 @@ void Contacts::cleanDb(QSqlDatabase &db) {
 
 bool Contacts::sqlToCSV(QString strExport)
 {
-    QSqlQuery query;
-    QStringList exportList ={""};
-    QString exportString;
-    exportString = "SELECT " + strExport + " FROM contacts";
-    query.prepare(exportString);
-    if (!query.exec()){
-            qDebug("failed to run query");
-            return false;
-    }
+    return QtConcurrent::run(&_pool, [this, strExport]() {
+        QSqlQuery query(_db);
 
-    while(query.next())
-    {
-        const QSqlRecord record = query.record();
-        for(int i=0, recCount = record.count(); i < recCount; ++i)
-        {
-            exportList.append(record.value(i).toString());
-        }
-    }
-
-    for(int i=0;i < exportList.size();i++)
-    {
-        QString csvName;
-        if(exportList[i].isEmpty())
-        {
-            csvName = strExport + "-empty.csv";
-        }
-        else {
-            csvName = strExport + "-" + exportList[i] +".csv";
-        }
-
-        QFile csvCompany(csvName);
-        QString queryRequest = "SELECT * FROM contacts WHERE "+ strExport + "='" + exportList[i] + "'";
-        query.prepare(queryRequest);
-        qDebug()<<queryRequest<< endl;
-        if (!csvCompany.open(QFile::WriteOnly | QFile::Text)){
-                qDebug("failed to open csv file");
-                return false;
-        }
+        QStringList exportList ={""};
+        QString exportString;
+        exportString = "SELECT " + strExport + " FROM contacts";
+        query.prepare(exportString);
         if (!query.exec()){
                 qDebug("failed to run query");
                 return false;
         }
-        QTextStream outStream(&csvCompany);
-        outStream.setCodec("UTF-8");
+
         while(query.next())
         {
             const QSqlRecord record = query.record();
-            for(int i=0, recCount = record.count(); i<recCount; ++i)
+            for(int i=0, recCount = record.count(); i < recCount; ++i)
             {
-                if(i>0) { outStream << ','; }
-                outStream << escapedCSV(record.value(i).toString());
+                exportList.append(record.value(i).toString());
             }
-            outStream << '\n';
         }
-        csvCompany.close();
-    }
-    return true;
+
+        for(int i=0;i < exportList.size();i++)
+        {
+            QString csvName;
+            if(exportList[i].isEmpty())
+            {
+                csvName = strExport + "-empty.csv";
+            }
+            else {
+                csvName = strExport + "-" + exportList[i] +".csv";
+            }
+
+            QFile csvCompany(csvName);
+            QString queryRequest = "SELECT * FROM contacts WHERE "+ strExport + "='" + exportList[i] + "'";
+            query.prepare(queryRequest);
+            qDebug()<<queryRequest<< endl;
+            if (!csvCompany.open(QFile::WriteOnly | QFile::Text)){
+                    qDebug("failed to open csv file");
+                    return false;
+            }
+            if (!query.exec()){
+                    qDebug("failed to run query");
+                    return false;
+            }
+            QTextStream outStream(&csvCompany);
+            outStream.setCodec("UTF-8");
+            while(query.next())
+            {
+                const QSqlRecord record = query.record();
+                for(int i=0, recCount = record.count(); i<recCount; ++i)
+                {
+                    if(i>0) { outStream << ','; }
+                    outStream << escapedCSV(record.value(i).toString());
+                }
+                outStream << '\n';
+            }
+            csvCompany.close();
+        }
+        return true;
+    });
 }
 
 QString Contacts::escapedCSV(QString unexc)

@@ -17,7 +17,9 @@
 #include <QDate>
 #include <QDirIterator>
 #include <QObject>
-
+#include <QThreadPool>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
 #include "contacts_global.h"
 
 class CONTACTS_EXPORT Contacts : QObject
@@ -36,6 +38,7 @@ public:
 
 private:
     QSqlDatabase _db;
+    QThreadPool _pool;
 };
 
 #endif // CONTACTS_H

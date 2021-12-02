@@ -352,70 +352,70 @@
           </spacer>
          </item>
          <item row="1" column="1">
-          <widget class="QRadioButton" name="radioButton">
+          <widget class="QRadioButton" name="r_firstname">
            <property name="text">
             <string>Exporter</string>
            </property>
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QRadioButton" name="radioButton_2">
+          <widget class="QRadioButton" name="r_lastname">
            <property name="text">
             <string>Exporter</string>
            </property>
           </widget>
          </item>
          <item row="5" column="1">
-          <widget class="QRadioButton" name="radioButton_3">
+          <widget class="QRadioButton" name="r_email">
            <property name="text">
             <string>Exporter</string>
            </property>
           </widget>
          </item>
          <item row="7" column="1">
-          <widget class="QRadioButton" name="radioButton_4">
+          <widget class="QRadioButton" name="r_phone">
            <property name="text">
             <string>Exporter</string>
            </property>
           </widget>
          </item>
          <item row="9" column="1">
-          <widget class="QRadioButton" name="radioButton_5">
+          <widget class="QRadioButton" name="r_category">
            <property name="text">
             <string>Exporter</string>
            </property>
           </widget>
          </item>
          <item row="11" column="1">
-          <widget class="QRadioButton" name="radioButton_6">
+          <widget class="QRadioButton" name="r_city">
            <property name="text">
             <string>Exporter</string>
            </property>
           </widget>
          </item>
          <item row="13" column="1">
-          <widget class="QRadioButton" name="radioButton_7">
+          <widget class="QRadioButton" name="r_birthday">
            <property name="text">
             <string>Exporter</string>
            </property>
           </widget>
          </item>
          <item row="15" column="1">
-          <widget class="QRadioButton" name="radioButton_8">
+          <widget class="QRadioButton" name="r_country">
            <property name="text">
             <string>Exporter</string>
            </property>
           </widget>
          </item>
          <item row="17" column="1">
-          <widget class="QRadioButton" name="radioButton_9">
+          <widget class="QRadioButton" name="r_list">
            <property name="text">
             <string>Exporter</string>
            </property>
           </widget>
          </item>
          <item row="19" column="1">
-          <widget class="QRadioButton" name="radioButton_10">
+          <widget class="QRadioButton" name="r_company">
            <property name="text">
             <string>Exporter</string>
            </property>

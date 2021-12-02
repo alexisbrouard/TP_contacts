@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFuture>
+#include <QtConcurrent>
+#include <QObject>
 #include "contacts.h"
 
 QT_BEGIN_NAMESPACE
@@ -18,6 +21,8 @@ public:
 
 private slots:
     void on_export_button_clicked();
+
+    void on_del_button_clicked();
 
 private:
     Contacts db_contacts;
