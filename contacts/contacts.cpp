@@ -16,17 +16,14 @@ Contacts::Contacts()
     }
     else {
         setupDB();
-        //insertAll();
+        insertAll();
     }
 }
 
-Contacts::~Contacts()
-{
-}
+Contacts::~Contacts() {}
 
 bool Contacts::insertAll()
 {
-    qDebug() << "Inside Function Insert";
     QStringList wordList;
     QString data;
     QStringList appDataLocation = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
@@ -54,20 +51,25 @@ bool Contacts::insertAll()
 bool Contacts::addRow(QStringList dataList)
 {
     return QtConcurrent::run(&_pool, [this, dataList]() {
-        QSqlQuery query(_db);
+    QSqlQuery query(_db);
     QDate Date = QDate::fromString(dataList[9],"yyyy/MM/dd");
 
+    query.exec("pragma temp_store = memory");
+    query.exec("PRAGMA synchronous = normal");
+    query.exec("pragma mmap_size = 30000000000");
+    query.exec("PRAGMA journal_mode = wal");
     query.prepare("INSERT INTO contacts(GUID, firstname, lastname, email, tel, category, city, birth_day, country, list, company)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    for (int i = 0; i <= 11; i++) {
-        if (i == 0)
-            continue;
+    for (int i = 1; i < dataList.size(); i++) {
         if (i == 9)
             query.bindValue(i - 1, Date);
         else
             query.bindValue(i - 1, dataList[i]);
     }
-    if(query.exec() == true) { return true; }
+    if (query.exec() == true)
+    {
+        return true;
+    }
     if (query.lastError().isValid()) {
         qWarning() << query.lastError().text();
     }
@@ -75,26 +77,47 @@ bool Contacts::addRow(QStringList dataList)
     });
 }
 
-bool Contacts::Delete_Company(QString &str)
+bool Contacts::updateRow(QString &field, QString &elem)
 {
-    QSqlQuery query;
-    query.prepare("DELETE FROM contacts WHERE company ='" + str + "'");
-    if(query.exec() == true)
-    {
-        qDebug() << "Success Delete";
-        return true;
-    }
-    if (query.lastError().isValid()) {
-            qWarning() << query.lastError().text();
-            return false;
-     }
-    return false;
+    return QtConcurrent::run(&_pool, [this, field, elem]() {
+        QSqlQuery query(_db);
+        query.prepare("UPDATE contacts"
+                      " SET company = " + elem);
+        if (query.exec() == true)
+        {
+            qDebug() << "Update Success";
+            return true;
+        }
+        if (query.lastError().isValid()) {
+                qWarning() << query.lastError().text();
+                return false;
+         }
+        return false;
+    });
+}
+
+bool Contacts::deleteCompany(QString &str)
+{
+    return QtConcurrent::run(&_pool, [this, str]() {
+        QSqlQuery query(_db);
+        query.prepare("DELETE FROM contacts WHERE company ='" + str + "'");
+        if(query.exec())
+        {
+            qDebug() << "Success Delete";
+            return true;
+        }
+        if (query.lastError().isValid()) {
+                qWarning() << query.lastError().text();
+                return false;
+         }
+        return false;
+    });
 }
 
 bool Contacts::setupDB()
 {
     QString tblFilesCreate = "CREATE TABLE IF NOT EXISTS contacts ("
-                             "id            INTEGER PRIMARY KEY AUTOINCREMENT, "
+                             "id            INTEGER PRIMARY KEY AUTOINCREMENT,"
                              "GUID          STRING,"
                              "firstname     STRING,"
                              "lastname      STRING,"
@@ -151,7 +174,7 @@ bool Contacts::sqlToCSV(QString strExport)
             }
         }
 
-        for(int i=0;i < exportList.size();i++)
+        for(int i = 0;i < exportList.size();i++)
         {
             QString csvName;
             if(exportList[i].isEmpty())

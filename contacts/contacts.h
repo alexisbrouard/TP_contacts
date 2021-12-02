@@ -33,7 +33,8 @@ public:
     void cleanDb(QSqlDatabase &db);
     bool sqlToCSV(QString strExport);
     bool addRow(QStringList dataList);
-    bool Delete_Company(QString &str);
+    bool deleteCompany(QString &str);
+    bool updateRow(QString &field, QString &elem);
     QString escapedCSV(QString unexc);
 
 private:

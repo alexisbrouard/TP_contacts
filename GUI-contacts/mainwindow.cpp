@@ -45,6 +45,17 @@ void MainWindow::on_del_button_clicked()
 {
     if (!ui->l_company->text().isEmpty()) {
         QString str = ui->l_company->text();
-        db_contacts.Delete_Company(str);
+        db_contacts.deleteCompany(str);
     }
 }
+
+void MainWindow::on_mod_button_clicked()
+{
+    // updates only the rows of the company because im lazy to do the full func
+    QString field = "Company";
+    if (!ui->l_company->text().isEmpty()) {
+        QString str = ui->l_company->text();
+        db_contacts.updateRow(field, str);
+    }
+}
+

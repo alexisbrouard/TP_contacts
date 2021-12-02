@@ -24,6 +24,8 @@ private slots:
 
     void on_del_button_clicked();
 
+    void on_mod_button_clicked();
+
 private:
     Contacts db_contacts;
     Ui::MainWindow *ui;
