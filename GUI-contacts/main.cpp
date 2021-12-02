@@ -16,24 +16,7 @@ int main(int argc, char *argv[])
     db_contacts.Delete_Company(company);*/
 
     /* initial Insert of all data*/
-    QStringList wordList;
-    QString data;
-    QStringList appDataLocation = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
-    QDir    dir(appDataLocation[0]);
 
-    QDirIterator iterator(dir);
-    while (iterator.hasNext()) {
-        QFile file(iterator.next());
-        if ( file.open( QIODevice::ReadOnly ) ) {
-            qDebug() << "Opened:" << file.fileName() << endl;
-            while (!file.atEnd()) {
-                   data = file.readLine();
-                   wordList = data.split(",");
-                   db_contacts.addRow(wordList);
-                   wordList.empty();
-            }
-        }
-    }
 
     /*Exporting Information Based on Company and Category*/
     /*db_contacts.sqlToCSV("company");

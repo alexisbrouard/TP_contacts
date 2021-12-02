@@ -3,12 +3,19 @@
 #define func_width    50
 
 #include "contacts.h"
-#include "contacts.h"
 
 Contacts::Contacts()
 {
     _db = QSqlDatabase::addDatabase("QSQLITE");
-    setupDB();
+    QString dbPath = "ContactsBDD.db";
+    _db.setDatabaseName(dbPath);
+
+    if (_db.open() == false) {
+        qWarning() << "Unable to open db" << dbPath;
+    }
+    else {
+        setupDB();
+    }
 }
 
 Contacts::~Contacts()
@@ -16,6 +23,29 @@ Contacts::~Contacts()
 
 }
 
+bool Contacts::insertAll()
+{
+    QStringList wordList;
+    QString data;
+    QStringList appDataLocation = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
+    QDir    dir(appDataLocation[0]);
+
+    QDirIterator iterator(dir);
+    while (iterator.hasNext()) {
+        QFile file(iterator.next());
+        if ( file.open( QIODevice::ReadOnly ) ) {
+            qDebug() << "Opened:" << file.fileName() << endl;
+            while (!file.atEnd()) {
+                   data = file.readLine();
+                   wordList = data.split(",");
+                   addRow(wordList);
+                   //QFuture<void> future = QtConcurrent::run(db_contacts.addRow(wordList), wordList);
+                   wordList.empty();
+            }
+        }
+    }
+    return true;
+}
 
 bool Contacts::addRow(QStringList dataList)
 {
@@ -56,14 +86,8 @@ bool Contacts::Delete_Company(QString &str)
     return false;
 }
 
-bool Contacts::setupDB() {
-    QString dbPath = "ContactsBDD.db";
-    _db.setDatabaseName(dbPath);
-
-    if (_db.open() == false) {
-        qWarning() << "Unable to open db" << dbPath;
-        return false;
-    }
+bool Contacts::setupDB()
+{
     qDebug() << __FUNCTION__ << __LINE__ << "creating table 'contacts'";
     QString tblFilesCreate = "CREATE TABLE IF NOT EXISTS contacts ("
                              "id            INTEGER PRIMARY KEY AUTOINCREMENT, "

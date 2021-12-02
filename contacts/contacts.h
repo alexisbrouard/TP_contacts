@@ -16,15 +16,18 @@
 #include <QtSql/QSqlRecord>
 #include <QDate>
 #include <QDirIterator>
+#include <QObject>
 
 #include "contacts_global.h"
 
-class CONTACTS_EXPORT Contacts
+class CONTACTS_EXPORT Contacts : QObject
 {
+    Q_OBJECT
 public:
     Contacts();
     ~Contacts();
     bool setupDB();
+    bool insertAll();
     void cleanDb(QSqlDatabase &db);
     bool sqlToCSV(QString strExport);
     bool addRow(QStringList dataList);

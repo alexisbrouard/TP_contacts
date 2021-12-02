@@ -1,6 +1,7 @@
 QT -= gui
 QT += sql
 QT += gui widgets
+QT += core concurrent
 
 TEMPLATE = lib
 DEFINES += CONTACTS_LIBRARY

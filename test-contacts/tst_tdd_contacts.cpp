@@ -1,7 +1,6 @@
 #include <QtTest>
 #include <QCoreApplication>
 
-// add necessary includes here
 #include "contacts.h"
 
 class TDD_contacts : public QObject
@@ -13,25 +12,18 @@ public:
     ~TDD_contacts();
 
 private slots:
-    void initTestCase();
     void test_delete();
     void test_addRow();
-
+    void test_createDB();
 };
 
-TDD_contacts::TDD_contacts()
+TDD_contacts::TDD_contacts() {}
+
+TDD_contacts::~TDD_contacts() {}
+
+void TDD_contacts::test_createDB()
 {
-
-}
-
-TDD_contacts::~TDD_contacts()
-{
-
-}
-
-void TDD_contacts::initTestCase()
-{
-
+    QCOMPARE(obj.setupDB(), true);
 }
 
 void TDD_contacts::test_delete()
