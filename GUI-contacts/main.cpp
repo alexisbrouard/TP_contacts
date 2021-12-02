@@ -10,19 +10,16 @@ int main(int argc, char *argv[])
     w.show();
 
     Contacts db_contacts;
-    /*QString company = "Facebook";
-    db_contacts.Delete_Company(company);
-    // initial Insert of all data
+
+    /*Deleting Rows with facebook company*/
+    /* QString company = "Facebook";
+    db_contacts.Delete_Company(company);*/
+
+    /* initial Insert of all data*/
     QStringList wordList;
     QString data;
-    QString appDataLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/data_qt";
-
-    QDir    dir(appDataLocation);
-    qDebug() << appDataLocation;
-    if (!dir.exists()) {
-           dir.mkdir(appDataLocation);
-           qDebug() << __FUNCTION__ << __LINE__ << "mkdir" << appDataLocation;
-    }
+    QStringList appDataLocation = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
+    QDir    dir(appDataLocation[0]);
 
     QDirIterator iterator(dir);
     while (iterator.hasNext()) {
@@ -31,19 +28,16 @@ int main(int argc, char *argv[])
             qDebug() << "Opened:" << file.fileName() << endl;
             while (!file.atEnd()) {
                    data = file.readLine();
-                   //qDebug() << "Data: "<< data;
                    wordList = data.split(",");
                    db_contacts.addRow(wordList);
                    wordList.empty();
-                    }
+            }
         }
-        else
-            qDebug() << "Can't open " << file.fileName() << file.errorString() << endl;
-    }*/
+    }
 
-    //db_contacts.sqlToCSV("company");
-    //db_contacts.sqlToCSV("category");
-
+    /*Exporting Information Based on Company and Category*/
+    /*db_contacts.sqlToCSV("company");
+    db_contacts.sqlToCSV("category");*/
 
     return a.exec();
 }
