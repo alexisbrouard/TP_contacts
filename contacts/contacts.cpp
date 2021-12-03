@@ -16,7 +16,7 @@ Contacts::Contacts()
     }
     else {
         setupDB();
-        insertAll();
+        //insertAll();
     }
 }
 
@@ -170,9 +170,13 @@ bool Contacts::sqlToCSV(QString strExport)
             const QSqlRecord record = query.record();
             for(int i=0, recCount = record.count(); i < recCount; ++i)
             {
-                exportList.append(record.value(i).toString());
+                if(!exportList.contains(record.value(i).toString()))
+                {
+                    exportList.append(record.value(i).toString());
+                }
             }
         }
+        qDebug() << "La liste d'export est : " << exportList.size();
 
         for(int i = 0;i < exportList.size();i++)
         {
@@ -202,15 +206,16 @@ bool Contacts::sqlToCSV(QString strExport)
             while(query.next())
             {
                 const QSqlRecord record = query.record();
-                for(int i=0, recCount = record.count(); i<recCount; ++i)
+                for(int j=0, recCount = record.count(); j<recCount; ++j)
                 {
-                    if(i>0) { outStream << ','; }
-                    outStream << escapedCSV(record.value(i).toString());
+                    if(j>0) { outStream << ','; }
+                    outStream << escapedCSV(record.value(j).toString());
                 }
                 outStream << '\n';
             }
             csvCompany.close();
         }
+        qDebug() << "Sortie de boucle for";
         return true;
     });
 }
