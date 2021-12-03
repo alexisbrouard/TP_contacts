@@ -26,8 +26,33 @@ private slots:
 
     void on_mod_button_clicked();
 
+    void on_pushButton_10_clicked();
+
+    void on_but_globalstats_clicked();
+
+    void on_but_firstname_clicked();
+
+    void on_but_lastname_clicked();
+
+    void on_but_email_clicked();
+
+    void on_but_phone_clicked();
+
+    void on_but_category_clicked();
+
+    void on_but_city_clicked();
+
+    void on_but_birthday_clicked();
+
+    void on_but_country_clicked();
+
+    void on_but_list_clicked();
+
+    void on_but_company_clicked();
+
 private:
     Contacts db_contacts;
+    QString s_working;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

@@ -41,7 +41,8 @@ void TDD_contacts::test_delete()
     QStringList dataList = {"yolo", "yolo","yolo","yolo","yolo","yolo","yolo","yolo","yolo","yolo","yolo","Facebook"};
     obj.addRow(dataList);
     QString company = "Facebook";
-    QCOMPARE(obj.deleteCompany(company), true);
+    QString field = "company";
+    QCOMPARE(obj.deleteField(company,field), true);
 }
 
 void TDD_contacts::test_addRow()

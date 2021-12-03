@@ -48,11 +48,18 @@ bool Contacts::insertAll()
     return true;
 }
 
+QString Contacts::working(QString s_work)
+{
+    if(s_work.compare("FINI !"))
+        return "EN COURS";
+    else
+        return "FINI !";
+}
+
 bool Contacts::addRow(QStringList dataList)
 {
     return QtConcurrent::run(&_pool, [this, dataList]() {
     QSqlQuery query(_db);
-    QDate Date = QDate::fromString(dataList[9],"yyyy/MM/dd");
 
     query.exec("pragma temp_store = memory");
     query.exec("PRAGMA synchronous = normal");
@@ -61,10 +68,7 @@ bool Contacts::addRow(QStringList dataList)
     query.prepare("INSERT INTO contacts(GUID, firstname, lastname, email, tel, category, city, birth_day, country, list, company)"
                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     for (int i = 1; i < dataList.size(); i++) {
-        if (i == 9)
-            query.bindValue(i - 1, Date);
-        else
-            query.bindValue(i - 1, dataList[i]);
+        query.bindValue(i - 1, dataList[i]);
     }
     if (query.exec() == true)
     {
@@ -96,11 +100,11 @@ bool Contacts::updateRow(QString &field, QString &elem)
     });
 }
 
-bool Contacts::deleteCompany(QString &str)
+bool Contacts::deleteField(QString &str, QString &field)
 {
-    return QtConcurrent::run(&_pool, [this, str]() {
+    return QtConcurrent::run(&_pool, [this, str, field]() {
         QSqlQuery query(_db);
-        query.prepare("DELETE FROM contacts WHERE company ='" + str + "'");
+        query.prepare("DELETE FROM contacts WHERE " + field + "='" + str + "'");
         if(query.exec())
         {
             qDebug() << "Success Delete";
@@ -225,4 +229,40 @@ QString Contacts::escapedCSV(QString unexc)
     if (!unexc.contains(QLatin1Char(',')))
         return unexc;
     return '\"' + unexc.replace(QLatin1Char('\"'), QStringLiteral("\"\"")) + '\"';
+}
+
+QString Contacts::globalStats()
+{
+    QString stats;
+
+    QSqlQuery query;
+
+    query.prepare("SELECT COUNT(*) FROM contacts");
+    if (!query.exec()){
+            qDebug("failed to run query");
+    }
+
+    query.first();
+    stats = query.value(0).toString();
+
+    return stats;
+}
+
+QString Contacts::stats(QString s_stats)
+{
+    QString stats;
+    QSqlQuery query;
+
+    QString s_query = "SELECT COUNT(DISTINCT " + s_stats + ") FROM contacts";
+
+    query.prepare(s_query);
+
+    if (!query.exec()) {
+            qDebug("failed to run query");
+    }
+
+    query.first();
+    stats = query.value(0).toString();
+    return stats;
+
 }

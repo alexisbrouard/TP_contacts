@@ -30,11 +30,14 @@ public:
     ~Contacts();
     bool setupDB();
     bool insertAll();
+    QString working(QString s_work);
     void cleanDb(QSqlDatabase &db);
     bool sqlToCSV(QString strExport);
     bool addRow(QStringList dataList);
-    bool deleteCompany(QString &str);
+    bool deleteField(QString &str, QString &field);
     bool updateRow(QString &field, QString &elem);
+    QString globalStats();
+    QString stats(QString s_stats);
     QString escapedCSV(QString unexc);
 
 private:

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>959</width>
-    <height>781</height>
+    <width>941</width>
+    <height>812</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>10</x>
       <y>10</y>
       <width>901</width>
-      <height>730</height>
+      <height>742</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -53,7 +53,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="but_firstname">
            <property name="text">
             <string>Afficher stats</string>
            </property>
@@ -81,7 +81,7 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="but_lastname">
            <property name="text">
             <string>Afficher stats</string>
            </property>
@@ -109,7 +109,7 @@
           </widget>
          </item>
          <item row="5" column="0">
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="but_email">
            <property name="text">
             <string>Afficher stats</string>
            </property>
@@ -137,7 +137,7 @@
           </widget>
          </item>
          <item row="7" column="0">
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="but_phone">
            <property name="text">
             <string>Afficher stats</string>
            </property>
@@ -165,7 +165,7 @@
           </widget>
          </item>
          <item row="9" column="0">
-          <widget class="QPushButton" name="pushButton_5">
+          <widget class="QPushButton" name="but_category">
            <property name="text">
             <string>Afficher stats</string>
            </property>
@@ -193,7 +193,7 @@
           </widget>
          </item>
          <item row="11" column="0">
-          <widget class="QPushButton" name="pushButton_6">
+          <widget class="QPushButton" name="but_city">
            <property name="text">
             <string>Afficher stats</string>
            </property>
@@ -221,7 +221,7 @@
           </widget>
          </item>
          <item row="13" column="0">
-          <widget class="QPushButton" name="pushButton_7">
+          <widget class="QPushButton" name="but_birthday">
            <property name="text">
             <string>Afficher stats</string>
            </property>
@@ -249,9 +249,9 @@
           </widget>
          </item>
          <item row="15" column="0">
-          <widget class="QPushButton" name="pushButton_11">
+          <widget class="QPushButton" name="but_country">
            <property name="text">
-            <string>PushButton</string>
+            <string>Afficher stats</string>
            </property>
           </widget>
          </item>
@@ -277,7 +277,7 @@
           </widget>
          </item>
          <item row="17" column="0">
-          <widget class="QPushButton" name="pushButton_8">
+          <widget class="QPushButton" name="but_list">
            <property name="text">
             <string>Afficher stats</string>
            </property>
@@ -305,7 +305,7 @@
           </widget>
          </item>
          <item row="19" column="0">
-          <widget class="QPushButton" name="pushButton_9">
+          <widget class="QPushButton" name="but_company">
            <property name="text">
             <string>Afficher stats</string>
            </property>
@@ -450,7 +450,37 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_10">
+        <widget class="QLabel" name="l_debug">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>EN ATTENTE</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="but_globalstats">
          <property name="font">
           <font>
            <pointsize>12</pointsize>
@@ -511,7 +541,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>959</width>
+     <width>941</width>
      <height>20</height>
     </rect>
    </property>
