@@ -20,7 +20,7 @@
       <x>10</x>
       <y>10</y>
       <width>901</width>
-      <height>742</height>
+      <height>750</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -437,20 +437,7 @@
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="l_debug">
+        <widget class="QLabel" name="l_error">
          <property name="font">
           <font>
            <pointsize>12</pointsize>
@@ -459,25 +446,12 @@
           </font>
          </property>
          <property name="text">
-          <string>EN ATTENTE</string>
+          <string>AUCUNE ACTION EN ATTENTE</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item>
         <widget class="QPushButton" name="but_globalstats">

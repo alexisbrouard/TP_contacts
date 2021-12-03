@@ -26,8 +26,6 @@ private slots:
 
     void on_mod_button_clicked();
 
-    void on_pushButton_10_clicked();
-
     void on_but_globalstats_clicked();
 
     void on_but_firstname_clicked();
@@ -49,6 +47,7 @@ private slots:
     void on_but_list_clicked();
 
     void on_but_company_clicked();
+
 
 private:
     Contacts db_contacts;

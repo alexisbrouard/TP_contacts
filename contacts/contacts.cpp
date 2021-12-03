@@ -6,6 +6,8 @@
 
 Contacts::Contacts()
 {
+
+
     _pool.setMaxThreadCount(1);
     _db = QSqlDatabase::addDatabase("QSQLITE");
     QString dbPath = "ContactsBDD.db";
@@ -16,7 +18,11 @@ Contacts::Contacts()
     }
     else {
         setupDB();
-        //insertAll();
+        if(globalStats().toInt()<=0)
+        {
+            qDebug() <<"On est dedans !";
+            insertAll();
+        }
     }
 }
 
@@ -48,13 +54,6 @@ bool Contacts::insertAll()
     return true;
 }
 
-QString Contacts::working(QString s_work)
-{
-    if(s_work.compare("FINI !"))
-        return "EN COURS";
-    else
-        return "FINI !";
-}
 
 bool Contacts::addRow(QStringList dataList)
 {
@@ -239,7 +238,7 @@ QString Contacts::globalStats()
 
     query.prepare("SELECT COUNT(*) FROM contacts");
     if (!query.exec()){
-            qDebug("failed to run query");
+        qDebug("failed to run query");
     }
 
     query.first();

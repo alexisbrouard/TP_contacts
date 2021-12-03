@@ -4,6 +4,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
+#include <QFile>
 #include <QtSql/QSqlDriver>
 #include <QElapsedTimer>
 #include <QtSql/QSqlQuery>
@@ -30,7 +31,7 @@ public:
     ~Contacts();
     bool setupDB();
     bool insertAll();
-    QString working(QString s_work);
+    bool checkSize();
     void cleanDb(QSqlDatabase &db);
     bool sqlToCSV(QString strExport);
     bool addRow(QStringList dataList);
@@ -42,6 +43,7 @@ public:
 
 private:
     QSqlDatabase _db;
+    QString listAllData;
     QThreadPool _pool;
 };
 

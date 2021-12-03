@@ -7,6 +7,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    QStringListModel* model = new QStringListModel(db_contacts);
+    ui->listView->setModel(model);
 }
 
 MainWindow::~MainWindow()
@@ -16,6 +19,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_export_button_clicked()
 {
+    ui->l_error->setText("EN COURS");
+
     //firstname
     if(ui->r_firstname->isChecked()){db_contacts.sqlToCSV("firstname");}
     //lastname
@@ -36,6 +41,8 @@ void MainWindow::on_export_button_clicked()
     if(ui->r_list->isChecked()){db_contacts.sqlToCSV("list");}
     //company
     if(ui->r_company->isChecked()){db_contacts.sqlToCSV("company");}
+
+    ui->l_error->setText("AUCUNE ACTION EN ATTENTE");
 }
 
 void MainWindow::on_del_button_clicked()
