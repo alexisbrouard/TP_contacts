@@ -57,3 +57,8 @@ Si la base de données est vierge ou n'existe pas, le programme lancera automati
 - Que les fichiers csv se trouvent dans le répertoire : \AppData\Roaming\GUI-contacts
 - Que les données soient au même format et comportent les mêmes champs
 
+##Exportation de la base vers des fichiers CSV
+
+Lors de l'exportation des fichiers, vous pourrez les retrouver ici :
+- Build.../GUI-Contacts/
+- Les fichiers sont triés avec : category-valeur.csv
