@@ -27,25 +27,25 @@ la modification de cette même base ainsi que la supprission de données par cri
 
 ## Comment utiliser l'application ?
 
-#### Suppresion de lignes selon les valeurs entrées
+### Suppresion de lignes selon les valeurs entrées
 
 Il suffit de rentrer dans les champs les conditions de suppression comme :
 "Facebook" dans le champ "Compagnie" et toutes les données associés à l'entreprise
 seront supprimées.
 
-#### Exportation des données selon le bouton radio coché
+### Exportation des données selon le bouton radio coché
 
 Il suffit de cocher un bouton radio et toutes les données associés à la catégorie
 sélectionnée seront exportées sous forme de CSV générés par informations différentes
 dans la catégorie. Par exemple, la catégorie "Entreprise" génerera un fichier CSV
 pour chaque entreprise différente ainsi les personnes seront triés en étant lié à celle-ci.
 
-#### Affichage des statistiques globales
+### Affichage des statistiques globales
 
 Il faut cliquer sur le bouton "AFFICHER STATS GLOBALES" qui compte le nombre de lignes
 totales dans la base de données.
 
-#### Affichage des statistiques détaillées
+### Affichage des statistiques détaillées
 
 Il faut cliquer sur le bouton "Afficher stats" de la catégorie que l'on souhaite et
 le logiciel comptera le nombre d'informtations différentes dans la catégorie. Par
