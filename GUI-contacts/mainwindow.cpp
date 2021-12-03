@@ -7,8 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    QStringListModel* model = new QStringListModel(db_contacts);
+    QStringList list = db_contacts.getData();
+    QStringListModel* model = new QStringListModel(list);
     ui->listView->setModel(model);
 }
 

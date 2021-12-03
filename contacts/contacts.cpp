@@ -227,38 +227,70 @@ QString Contacts::escapedCSV(QString unexc)
     return '\"' + unexc.replace(QLatin1Char('\"'), QStringLiteral("\"\"")) + '\"';
 }
 
+QStringList Contacts::getData()
+{
+    return QtConcurrent::run(&_pool, [this]() {
+        QSqlQuery query(_db);
+
+        QStringList list;
+
+        query.prepare("SELECT firstname,lastname FROM contacts");
+
+        if (!query.exec()){
+            qDebug("failed to run query");
+        }
+        while(query.next())
+        {
+            const QSqlRecord record = query.record();
+            qDebug() << record.count();
+
+
+            for(int i=0, recCount = record.count(); i<recCount; ++i)
+            {
+                list.append(record.value(i).toString());
+            }
+        }
+        return list;
+
+    });
+}
+
 QString Contacts::globalStats()
 {
-    QString stats;
+    return QtConcurrent::run(&_pool, [this]() {
+        QSqlQuery query(_db);
 
-    QSqlQuery query;
+        QString stats;
 
-    query.prepare("SELECT COUNT(*) FROM contacts");
-    if (!query.exec()){
-        qDebug("failed to run query");
-    }
+        query.prepare("SELECT COUNT(*) FROM contacts");
+        if (!query.exec()){
+            qDebug("failed to run query");
+        }
 
-    query.first();
-    stats = query.value(0).toString();
+        query.first();
+        stats = query.value(0).toString();
 
-    return stats;
+        return stats;
+    });
 }
 
 QString Contacts::stats(QString s_stats)
 {
-    QString stats;
-    QSqlQuery query;
+    return QtConcurrent::run(&_pool, [this,s_stats]() {
+        QSqlQuery query(_db);
 
-    QString s_query = "SELECT COUNT(DISTINCT " + s_stats + ") FROM contacts";
+        QString stats;
 
-    query.prepare(s_query);
+        QString s_query = "SELECT COUNT(DISTINCT " + s_stats + ") FROM contacts";
 
-    if (!query.exec()) {
-            qDebug("failed to run query");
-    }
+        query.prepare(s_query);
 
-    query.first();
-    stats = query.value(0).toString();
-    return stats;
+        if (!query.exec()) {
+                qDebug("failed to run query");
+        }
 
+        query.first();
+        stats = query.value(0).toString();
+        return stats;
+    });
 }

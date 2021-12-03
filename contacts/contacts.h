@@ -40,10 +40,13 @@ public:
     QString globalStats();
     QString stats(QString s_stats);
     QString escapedCSV(QString unexc);
+    QStringList getData();
+
+
 
 private:
-    QSqlDatabase _db;
     QStringList listAllData;
+    QSqlDatabase _db;
     QThreadPool _pool;
 };
 
