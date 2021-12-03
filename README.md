@@ -20,6 +20,7 @@ la modification de cette même base ainsi que la suppression de données par cri
 ## Fonctionnalités implémentés
 
 - Suppression de lignes selon les valeurs entrées
+- Modification de lignes selon les valeurs entrés
 - Exportation de données selon le bouton radio coché
 - Affichage de statistiques globales
 - Affichage de statistiques détaillées
@@ -32,6 +33,11 @@ la modification de cette même base ainsi que la suppression de données par cri
 Il suffit de rentrer dans les champs les conditions de suppression comme :
 "Facebook" dans le champ "Compagnie" et toutes les données associés à l'entreprise
 seront supprimées.
+
+### Modification de lignes selon les valeurs entrées
+
+Il suffit de rentrer le nom d'une entreprise et de cliquer sur "MODIFIER" pour voir les entreprises de tous les utilisateurs modifiés.
+Par la suite, des changements seront faits concernant l'UI ainsi que le code afin de modifier précisément une donnée dans un champ.
 
 ### Exportation des données selon le bouton radio coché
 
