@@ -82,7 +82,7 @@ bool Contacts::updateRow(QString &field, QString &elem)
     return QtConcurrent::run(&_pool, [this, field, elem]() {
         QSqlQuery query(_db);
         query.prepare("UPDATE contacts"
-                      " SET company = " + elem);
+                      " SET company = '" + elem + "'");
         if (query.exec() == true)
         {
             qDebug() << "Update Success";
@@ -233,22 +233,23 @@ QStringList Contacts::getData()
         QSqlQuery query(_db);
 
         QStringList list;
+        QString listField;
 
-        query.prepare("SELECT firstname,lastname FROM contacts");
+        query.prepare("SELECT * FROM contacts");
 
         if (!query.exec()){
             qDebug("failed to run query");
         }
+        //query.first();
+        //qDebug() << query.value(1).toString();
         while(query.next())
         {
-            const QSqlRecord record = query.record();
-            qDebug() << record.count();
 
+            listField.append(query.value(2).toString());
+            listField.append(" - ");
+            listField.append(query.value(3).toString());
 
-            for(int i=0, recCount = record.count(); i<recCount; ++i)
-            {
-                list.append(record.value(i).toString());
-            }
+            list.append(listField);
         }
         return list;
 

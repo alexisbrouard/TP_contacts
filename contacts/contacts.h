@@ -41,6 +41,7 @@ public:
     QString stats(QString s_stats);
     QString escapedCSV(QString unexc);
     QStringList getData();
+    QStringList getDataToModify();
 
 
 

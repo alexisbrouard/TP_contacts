@@ -208,4 +208,3 @@ void MainWindow::on_but_company_clicked()
 
     ui->l_stats->setText(stats);
 }
-

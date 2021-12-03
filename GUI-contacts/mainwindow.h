@@ -49,6 +49,8 @@ private slots:
     void on_but_company_clicked();
 
 
+    void on_listView_indexesMoved(const QModelIndexList &indexes);
+
 private:
     Contacts db_contacts;
     QString s_working;
