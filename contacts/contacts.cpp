@@ -6,8 +6,6 @@
 
 Contacts::Contacts()
 {
-
-
     _pool.setMaxThreadCount(1);
     _db = QSqlDatabase::addDatabase("QSQLITE");
     QString dbPath = "ContactsBDD.db";
@@ -18,9 +16,8 @@ Contacts::Contacts()
     }
     else {
         setupDB();
-        if(globalStats().toInt()<=0)
+        if(globalStats().toInt() <= 0)
         {
-            qDebug() <<"On est dedans !";
             insertAll();
         }
     }
@@ -30,7 +27,6 @@ Contacts::~Contacts() {}
 
 bool Contacts::insertAll()
 {
-    QStringList wordList;
     QString data;
     QStringList appDataLocation = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
     QDir    dir(appDataLocation[0]);
@@ -42,15 +38,11 @@ bool Contacts::insertAll()
             qDebug() << "Opened:" << file.fileName() << endl;
             while (!file.atEnd()) {
                    data = file.readLine();
-                   wordList = data.split(",");
-                   wordList[11].replace("\r\n", "");
-                   addRow(wordList);
-                   wordList.empty();
+                   listAllData.append(data);
             }
         }
     }
-
-    qDebug() << "Exiting Function Insert";
+    addRow(listAllData);
     return true;
 }
 
@@ -58,25 +50,30 @@ bool Contacts::insertAll()
 bool Contacts::addRow(QStringList dataList)
 {
     return QtConcurrent::run(&_pool, [this, dataList]() {
-    QSqlQuery query(_db);
+        QSqlQuery query(_db);
+        QStringList one_line_split;
 
-    query.exec("pragma temp_store = memory");
-    query.exec("PRAGMA synchronous = normal");
-    query.exec("pragma mmap_size = 30000000000");
-    query.exec("PRAGMA journal_mode = wal");
-    query.prepare("INSERT INTO contacts(GUID, firstname, lastname, email, tel, category, city, birth_day, country, list, company)"
-                  "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    for (int i = 1; i < dataList.size(); i++) {
-        query.bindValue(i - 1, dataList[i]);
-    }
-    if (query.exec() == true)
-    {
-        return true;
-    }
-    if (query.lastError().isValid()) {
-        qWarning() << query.lastError().text();
-    }
-    return false;
+        query.exec("pragma temp_store = memory");
+        query.exec("PRAGMA synchronous = normal");
+        query.exec("pragma mmap_size = 30000000000");
+        query.exec("PRAGMA journal_mode = wal");
+        query.prepare("INSERT INTO contacts(GUID, firstname, lastname, email, tel, category, city, birth_day, country, list, company)"
+                      "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        qDebug()<< "datasize: " << dataList.size();
+        for (int i = 0; i < dataList.size(); i++) {
+            one_line_split = dataList[i].split(",");
+            for (int j = 1; j < one_line_split.size(); j++) {
+                if (j == 11)
+                    one_line_split[j].replace("\r\n", "");
+                 query.bindValue(j - 1, one_line_split[j]);
+            }
+            query.exec();
+        }
+        if (query.lastError().isValid()) {
+            qWarning() << query.lastError().text();
+        }
+        return false;
     });
 }
 

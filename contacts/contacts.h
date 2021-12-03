@@ -43,7 +43,7 @@ public:
 
 private:
     QSqlDatabase _db;
-    QString listAllData;
+    QStringList listAllData;
     QThreadPool _pool;
 };
 
