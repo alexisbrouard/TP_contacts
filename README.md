@@ -6,7 +6,7 @@
 
 Ce projet en développement logiciel avancé a pour but de proposer une application
 permettant l'exportation d'une base de données en différents fichiers csv ou encore
-la modification de cette même base ainsi que la supprission de données par critère.
+la modification de cette même base ainsi que la suppression de données par critère.
 
 
 ## Créateurs
