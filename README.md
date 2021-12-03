@@ -26,6 +26,8 @@ la modification de cette même base ainsi que la suppression de données par cri
 - Affichage de statistiques détaillées
 
 
+
+
 ## Comment utiliser l'application ?
 
 ### Suppresion de lignes selon les valeurs entrées
@@ -57,14 +59,33 @@ Il faut cliquer sur le bouton "Afficher stats" de la catégorie que l'on souhait
 le logiciel comptera le nombre d'informtations différentes dans la catégorie. Par
 exemple, la catégorie "Entreprise" compte 15 entreprises, et affichera donc 15.
 
+
+
+
 ## Insérer des fichiers CSV en base de données
 
 Si la base de données est vierge ou n'existe pas, le programme lancera automatiquement la création et l'insertion des fichiers en base, il faut donc :
 - Que les fichiers csv se trouvent dans le répertoire : \AppData\Roaming\GUI-contacts
 - Que les données soient au même format et comportent les mêmes champs
 
+
+
 ## Exportation de la base vers des fichiers CSV
 
 Lors de l'exportation des fichiers, vous pourrez les retrouver ici :
 - Build.../GUI-Contacts/
 - Les fichiers sont triés avec : category-valeur.csv
+
+
+
+## Problèmes rencontrés
+
+Nous avons eu un problème majeur et bloquant concernant la partie affichage de la liste d'éléments, lorsque celui-ci a été fait pour la première, la liste a bien 
+affiché "nom - prénom" mais au second lancement, et ce depuis, elle ne cesse de crasher.
+Voici la partie commentée afin de faire fonctionner (ou pas) l'affichage de la liste d'éléments : 
+
+```CPP
+QStringList list = db_contacts.getData();
+QStringListModel* model = new QStringListModel(list);
+ui->listView->setModel(model);
+```
