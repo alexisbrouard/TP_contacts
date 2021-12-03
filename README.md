@@ -53,8 +53,7 @@ exemple, la catégorie "Entreprise" compte 15 entreprises, et affichera donc 15.
 
 ## Insérer des fichiers CSV en base de données
 
-Si la base de données est vierge ou n'existe pas, il faut :
+Si la base de données est vierge ou n'existe pas, le programme lancera automatiquement la création et l'insertion des fichiers en base, il faut donc :
 - Que les fichiers csv se trouvent dans le répertoire : \AppData\Roaming\GUI-contacts
 - Que les données soient au même format et comportent les mêmes champs
-- Executer le programme et appuyer sur "INSERER DES DONNEES"
 
